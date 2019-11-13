@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/socket")
-@CrossOrigin("*")
+//@RequestMapping(value = "/api/socket")
+//@CrossOrigin("*")
 public class SocketRest {
     @Autowired
 

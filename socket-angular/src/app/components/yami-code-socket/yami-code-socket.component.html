@@ -1,7 +1,11 @@
-<p>
-    yami-code-socket works!
-</p>
-<form></form>
+<!-- <form name="userForm" (submit)="openSocket()" *ngIf="isLoaded">
+    <div style="margin-bottom: 20px;">
+        <input type="text" name="fromId" placeholder="Your id">
+        <input type="submit" [disabled]="isCustomSocketOpened" value="connect online">
+    </div>
+    <input type="text" name="toId" placeholder="your friends">
+</form> -->
+
 <form [formGroup]="userForm" (submit)="openSocket()" *ngIf="isLoaded">
     <p>User Information: (if user id(toId) is null the message will be sended to all users) </p>
     <div style="margin-bottom: 20px;">
