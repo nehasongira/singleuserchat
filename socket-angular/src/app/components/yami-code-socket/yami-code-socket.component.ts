@@ -57,15 +57,15 @@ export class YamiCodeSocketComponent implements OnInit {
     let that = this;
     this.stompClient.connect({}, function (frame) {
       that.isLoaded = true;
-      that.openGlobalSocket()
+     // that.openGlobalSocket()
     });
   }
 
-  openGlobalSocket() {
-    this.stompClient.subscribe("/socket-publisher", (message) => {
-      this.handleResult(message);
-    });
-  }
+  // openGlobalSocket() {
+  //   this.stompClient.subscribe("/socket-publisher", (message) => {
+  //     this.handleResult(message);
+  //   });
+  // }
 
   openSocket() {
     if (this.isLoaded) {

@@ -1,7 +1,7 @@
 <p>
     yami-code-socket works!
 </p>
-
+<form></form>
 <form [formGroup]="userForm" (submit)="openSocket()" *ngIf="isLoaded">
     <p>User Information: (if user id(toId) is null the message will be sended to all users) </p>
     <div style="margin-bottom: 20px;">
@@ -14,7 +14,7 @@
     <p>Message: </p>
     <input type="text" formControlName="message" name="message" placeholder="Message">
     <input type="submit" [disabled]="form.invalid || userForm.invalid" value="Send using socket subscription">
-    <input type="button" [disabled]="form.invalid || userForm.invalid" value="Send using a rest controller" (click)="sendMessageUsingRest()">
+    <!-- <input type="button" [disabled]="form.invalid || userForm.invalid" value="Send using a rest controller" (click)="sendMessageUsingRest()"> -->
 </form>
 <ul>
     <li *ngFor="let message of messages">From: {{message.fromId}}, To: {{message.toId}}, Message: {{message.message}}</li>
