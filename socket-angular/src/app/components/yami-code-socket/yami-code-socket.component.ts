@@ -86,6 +86,7 @@ export class YamiCodeSocketComponent implements OnInit {
         this.handleResultGrp(message);
     });
   }
+  this.isCustomSocketOpened = false;
   }
 
   openSocket() {
@@ -95,6 +96,7 @@ export class YamiCodeSocketComponent implements OnInit {
         this.handleResult(message);
       });
     }
+    this.isCustomSocketOpened = false;
   }
 
   handleResult(message){
