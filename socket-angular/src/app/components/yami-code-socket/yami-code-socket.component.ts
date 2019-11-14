@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 //import { SocketService } from '../../services/socket.service';
 import { ToastrService } from 'ngx-toastr';
 import { Message } from '../../model/message';
+import { MessageGrp } from '../../model/MessageGrp';
 
 @Component({
   selector: 'app-yami-code-socket',
@@ -19,8 +20,12 @@ export class YamiCodeSocketComponent implements OnInit {
   isCustomSocketOpened = false;
   private stompClient;
   private form: FormGroup;
+  private formgrp: FormGroup;
   private userForm: FormGroup;
+  private userFormGrp: FormGroup;
   messages: Message[] = [];
+  messagesgrp: MessageGrp[] = [];
+  
   // constructor(private socketService: SocketService, private toastr: ToastrService
   // ) { }
 
@@ -28,9 +33,16 @@ export class YamiCodeSocketComponent implements OnInit {
     this.form = new FormGroup({
       message: new FormControl(null, [Validators.required])
     })
+    this.formgrp = new FormGroup({
+      message: new FormControl(null, [Validators.required])
+    })
     this.userForm = new FormGroup({
       fromId: new FormControl(null, [Validators.required]),
       toId: new FormControl(null)
+    })
+    this.userFormGrp = new FormGroup({
+      fromId: new FormControl(null, [Validators.required]),
+      grpId: new FormControl(null)
     })
     this.initializeWebSocketConnection();
   }
@@ -39,6 +51,12 @@ export class YamiCodeSocketComponent implements OnInit {
     if (this.form.valid) {
       let message: Message = { message: this.form.value.message, fromId: this.userForm.value.fromId, toId: this.userForm.value.toId };
       this.stompClient.send("/socket-subscriber/send/message", {}, JSON.stringify(message));
+    }
+  }
+  sendMessageUsingSocketGrp() {
+    if (this.formgrp.valid) {
+      let message: MessageGrp = { message: this.formgrp.value.message, fromId: this.userFormGrp.value.fromId, grpId: this.userFormGrp.value.grpId };
+      this.stompClient.send("/socket-subscriber/send/grpMessage", {}, JSON.stringify(message));
     }
   }
 
@@ -61,11 +79,14 @@ export class YamiCodeSocketComponent implements OnInit {
     });
   }
 
-  // openGlobalSocket() {
-  //   this.stompClient.subscribe("/socket-publisher", (message) => {
-  //     this.handleResult(message);
-  //   });
-  // }
+  openGlobalSocket() {
+    if (this.isLoaded) {
+      this.isCustomSocketOpened = true;
+      this.stompClient.subscribe("/socket-publisher/"+this.userFormGrp.value.grpId, (message) => {
+        this.handleResultGrp(message);
+    });
+  }
+  }
 
   openSocket() {
     if (this.isLoaded) {
@@ -81,6 +102,16 @@ export class YamiCodeSocketComponent implements OnInit {
       let messageResult: Message = JSON.parse(message.body);
       console.log(messageResult);
       this.messages.push(messageResult);
+      // this.toastr.success("new message recieved", null, {
+      //   'timeOut': 3000
+      // });
+    }
+  }
+  handleResultGrp(message){
+    if (message.body) {
+      let messageResult: MessageGrp = JSON.parse(message.body);
+      console.log(messageResult);
+      this.messagesgrp.push(messageResult);
       // this.toastr.success("new message recieved", null, {
       //   'timeOut': 3000
       // });

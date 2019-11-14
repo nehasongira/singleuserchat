@@ -53,5 +53,26 @@ public class SocketRest {
         }
         return messageConverted;
     }
+    @MessageMapping("/send/grpMessage")
+    public Map<String, String> grp (String message){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> messageConverted = null;
+        try {
+            messageConverted = mapper.readValue(message, Map.class);
+        } catch (IOException e) {
+            messageConverted = null;
+        }
+        if(messageConverted!=null){
+            if(messageConverted.containsKey("grpId") && messageConverted.get("grpId")!=null && !messageConverted.get("grpId").equals("")){
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/"+messageConverted.get("toId"),messageConverted);
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/"+messageConverted.get("fromId"),message);
+//            }else{
+                this.simpMessagingTemplate.convertAndSend("/socket-publisher/"+messageConverted.get("grpId"),messageConverted);
+                  // this.simpMessagingTemplate.convertAndSend("/socket-publisher/"+messageConverted.get("fromId"),message);
+            }
+        }
+        return messageConverted;
+    }
+
 
 }
